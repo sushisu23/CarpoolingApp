@@ -1,6 +1,5 @@
 package com.carpoolingapp.activities;
 
-// File: CarpoolingApp/app/src/main/java/com/carpooling/app/activities/HomeActivity.java
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,8 +13,8 @@ import com.carpoolingapp.adapters.BookingAdapter;
 import com.carpoolingapp.models.Booking;
 import com.carpoolingapp.utils.FirebaseHelper;
 import com.carpoolingapp.utils.SharedPrefsHelper;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -28,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
     private MaterialButton riderModeButton, driverModeButton;
     private RecyclerView recyclerView;
     private View emptyState;
-    private FloatingActionButton fab;
+    private BottomNavigationView bottomNav;
 
     private FirebaseHelper firebaseHelper;
     private SharedPrefsHelper prefsHelper;
@@ -45,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         initViews();
         initFirebase();
         setupListeners();
+        setupBottomNav();
         loadUserData();
         setupRecyclerView();
         loadBookings();
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         driverModeButton = findViewById(R.id.driverModeButton);
         recyclerView = findViewById(R.id.recyclerView);
         emptyState = findViewById(R.id.emptyState);
-        fab = findViewById(R.id.fab);
+        bottomNav = findViewById(R.id.bottomNav);
     }
 
     private void initFirebase() {
@@ -80,19 +80,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isRiderMode) {
-                    // Search for rides
-                    Toast.makeText(HomeActivity.this, "Search rides feature coming soon", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Create ride
-                    startActivity(new Intent(HomeActivity.this, CreateRideActivity.class));
-                }
-            }
-        });
-
         findViewById(R.id.searchCard).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,8 +90,28 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.profileImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Profile feature coming soon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
             }
+        });
+    }
+
+    private void setupBottomNav() {
+        bottomNav.setSelectedItemId(R.id.nav_home);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                return true;
+            } else if (itemId == R.id.nav_create) {
+                startActivity(new Intent(HomeActivity.this, CreateRideActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_messages) {
+                startActivity(new Intent(HomeActivity.this, MessagesActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                return true;
+            }
+            return false;
         });
     }
 
@@ -118,7 +125,6 @@ public class HomeActivity extends AppCompatActivity {
         adapter = new BookingAdapter(this, bookingList, new BookingAdapter.OnBookingClickListener() {
             @Override
             public void onBookingClick(Booking booking) {
-                // Handle booking click
                 Toast.makeText(HomeActivity.this, "Booking details coming soon", Toast.LENGTH_SHORT).show();
             }
         });
@@ -192,5 +198,11 @@ public class HomeActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNav.setSelectedItemId(R.id.nav_home);
     }
 }

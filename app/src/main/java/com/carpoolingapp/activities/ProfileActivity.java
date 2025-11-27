@@ -1,5 +1,3 @@
-// File: CarpoolingApp/app/src/main/java/com/carpooling/app/activities/ProfileActivity.java
-
 package com.carpoolingapp.activities;
 
 import android.content.Intent;
@@ -12,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.carpoolingapp.R;
 import com.carpoolingapp.utils.FirebaseHelper;
 import com.carpoolingapp.utils.SharedPrefsHelper;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -19,6 +18,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView userNameText, userEmailText, ratingText;
     private TextView editProfileOption, changePasswordOption, paymentMethodsOption, rideHistoryOption;
     private MaterialButton logoutButton;
+    private BottomNavigationView bottomNav;
 
     private FirebaseHelper firebaseHelper;
     private SharedPrefsHelper prefsHelper;
@@ -31,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
         initViews();
         initFirebase();
         setupToolbar();
+        setupBottomNav();
         loadUserData();
         setupListeners();
     }
@@ -44,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         paymentMethodsOption = findViewById(R.id.paymentMethodsOption);
         rideHistoryOption = findViewById(R.id.rideHistoryOption);
         logoutButton = findViewById(R.id.logoutButton);
+        bottomNav = findViewById(R.id.bottomNav);
     }
 
     private void initFirebase() {
@@ -62,6 +64,28 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 finish();
             }
+        });
+    }
+
+    private void setupBottomNav() {
+        bottomNav.setSelectedItemId(R.id.nav_profile);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                finish();
+                return true;
+            } else if (itemId == R.id.nav_create) {
+                startActivity(new Intent(this, CreateRideActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.nav_messages) {
+                startActivity(new Intent(this, MessagesActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                return true;
+            }
+            return false;
         });
     }
 
@@ -115,5 +139,11 @@ public class ProfileActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNav.setSelectedItemId(R.id.nav_profile);
     }
 }

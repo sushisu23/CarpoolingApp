@@ -1,8 +1,8 @@
 package com.carpoolingapp.activities;
 
-// File: CarpoolingApp/app/src/main/java/com/carpooling/app/activities/CreateRideActivity.java
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +14,7 @@ import com.carpoolingapp.R;
 import com.carpoolingapp.models.Ride;
 import com.carpoolingapp.utils.FirebaseHelper;
 import com.carpoolingapp.utils.SharedPrefsHelper;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +26,7 @@ public class CreateRideActivity extends AppCompatActivity {
     private TextView dateText, timeText;
     private MaterialButton createRideButton;
     private View dateLayout, timeLayout;
+    private BottomNavigationView bottomNav;
 
     private FirebaseHelper firebaseHelper;
     private SharedPrefsHelper prefsHelper;
@@ -41,6 +43,7 @@ public class CreateRideActivity extends AppCompatActivity {
         initFirebase();
         setupToolbar();
         setupListeners();
+        setupBottomNav();
     }
 
     private void initViews() {
@@ -53,6 +56,7 @@ public class CreateRideActivity extends AppCompatActivity {
         createRideButton = findViewById(R.id.createRideButton);
         dateLayout = findViewById(R.id.dateLayout);
         timeLayout = findViewById(R.id.timeLayout);
+        bottomNav = findViewById(R.id.bottomNav);
     }
 
     private void initFirebase() {
@@ -94,6 +98,28 @@ public class CreateRideActivity extends AppCompatActivity {
             public void onClick(View v) {
                 createRide();
             }
+        });
+    }
+
+    private void setupBottomNav() {
+        bottomNav.setSelectedItemId(R.id.nav_create);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                finish();
+                return true;
+            } else if (itemId == R.id.nav_create) {
+                return true;
+            } else if (itemId == R.id.nav_messages) {
+                startActivity(new Intent(this, MessagesActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                finish();
+                return true;
+            }
+            return false;
         });
     }
 
@@ -206,5 +232,11 @@ public class CreateRideActivity extends AppCompatActivity {
                         Toast.makeText(CreateRideActivity.this, "Failed to create ride: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNav.setSelectedItemId(R.id.nav_create);
     }
 }
