@@ -23,7 +23,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private TextView userNameText, sectionTitle;
+    private TextView userNameText;
     private MaterialButton myBookingsButton, myListingsButton;
     private RecyclerView recyclerView;
     private View emptyState, searchCard;
@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initViews() {
         userNameText = findViewById(R.id.userNameText);
-        TextView userNameText2 = findViewById(R.id.userNameText2);
+        TextView userNameText2 = findViewById(R.id.helloText);
         myBookingsButton = findViewById(R.id.myBookingsButton);
         myListingsButton = findViewById(R.id.myListingsButton);
         recyclerView = findViewById(R.id.recyclerView);
@@ -141,7 +141,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void loadUserData() {
         String userName = prefsHelper.getUserName();
-        userNameText.setText(userName);
+        userNameText.setText(userName.split(" ")[0]); // only show first name
     }
 
     private void setupRecyclerView() {
@@ -173,15 +173,13 @@ public class HomeActivity extends AppCompatActivity {
         if (isBookingsMode) {
             myBookingsButton.setBackgroundTintList(getColorStateList(R.color.status_active));
             myBookingsButton.setTextColor(getColor(R.color.white));
-            myListingsButton.setBackgroundTintList(null);
+            myListingsButton.setBackgroundTintList(getColorStateList(R.color.status_inactive));
             myListingsButton.setTextColor(getColor(R.color.primary_blue));
-            sectionTitle.setText(R.string.your_bookings);
         } else {
             myListingsButton.setBackgroundTintList(getColorStateList(R.color.status_active));
             myListingsButton.setTextColor(getColor(R.color.white));
-            myBookingsButton.setBackgroundTintList(null);
+            myBookingsButton.setBackgroundTintList(getColorStateList(R.color.status_inactive));
             myBookingsButton.setTextColor(getColor(R.color.primary_blue));
-            sectionTitle.setText(R.string.your_listings);
         }
     }
 

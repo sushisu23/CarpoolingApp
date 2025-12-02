@@ -10,16 +10,6 @@
 
     <!-- Header -->
 
-    <!-- Mode Toggle -->
-
-
-    <!-- Content Section -->
-
-    <!-- Bookings/Listings RecyclerView -->
-
-    <!-- Empty State -->
-
-
     <androidx.cardview.widget.CardView
         android:id="@+id/linearLayout2"
         android:layout_width="411dp"
@@ -27,7 +17,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="-30dp"
         android:layout_marginEnd="1dp"
-        app:cardBackgroundColor="#9CABC2"
+        app:cardBackgroundColor="@color/background_blue"
         app:cardCornerRadius="45dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.142"
@@ -35,28 +25,28 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/userNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="150dp"
-            android:text="@string/user"
-            android:textColor="@color/text_white"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/userNameText2"
+            android:id="@+id/helloText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
             android:layout_marginTop="105dp"
             android:text="@string/hello"
             android:textColor="@color/text_white"
-            android:textSize="40sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/userNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="140dp"
+            android:text="@string/user"
+            android:textColor="@color/text_white"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/profileImage"
@@ -71,6 +61,8 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.cardview.widget.CardView>
+
+    <!-- Content Section -->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/searchView"
@@ -101,8 +93,39 @@
             android:text="@string/where_to" />
     </androidx.cardview.widget.CardView>
 
+    <!-- Empty State -->
 
-    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/emptyState"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myBookingsButton">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:alpha="0.3"
+            android:contentDescription="@string/empty"
+            android:src="@android:drawable/ic_menu_view" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/no_rides_yet"
+            android:textAlignment="center"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- Mode Toggle -->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/myListingsButton"
@@ -113,10 +136,10 @@
         android:layout_marginEnd="60dp"
         android:text="@string/your_listings"
         android:textColor="@color/primary_blue"
-        app:cornerRadius="0dp"
+        app:cornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:strokeColor="#E5E7EB" />
+        app:strokeColor="@color/status_inactive" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/myBookingsButton"
@@ -128,12 +151,14 @@
         android:layout_marginEnd="20dp"
         android:text="@string/your_bookings"
         android:textColor="@color/primary_blue"
-        app:cornerRadius="0dp"
+        app:cornerRadius="25dp"
         app:layout_constraintEnd_toStartOf="@+id/myListingsButton"
         app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:strokeColor="#E5E7EB" />
+        app:strokeColor="@color/status_inactive" />
+
+    <!-- Bookings/Listings RecyclerView -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -149,6 +174,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myListingsButton" />
+
+    <!-- Bottom Navigation -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
